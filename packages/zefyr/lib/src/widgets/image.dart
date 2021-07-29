@@ -6,17 +6,23 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart' show Colors, CircularProgressIndicator;
 import 'package:meta/meta.dart';
 import 'package:notus/notus.dart';
+import 'package:zefyr/src/widgets/scope.dart';
 
 import 'editable_box.dart';
 import 'selection_utils.dart';
 import 'theme.dart';
 
+typedef ImageUploadCallback = Future<bool> Function(String);
+
 /// Provides interface for embedding images into Zefyr editor.
 // TODO: allow configuring image sources and related toolbar buttons.
 @experimental
 abstract class ZefyrImageDelegate<S> {
+  ImageUploadCallback get imageUploadCallback;
+
   /// Unique key to identify camera source.
   S get cameraSource;
 
@@ -60,11 +66,25 @@ class _ZefyrImageState extends State<ZefyrImage> {
   @override
   Widget build(BuildContext context) {
     final theme = ZefyrTheme.of(context);
+    final editor = ZefyrScope.of(context);
     final image = widget.delegate.buildImage(context, imageSource);
+    // print(editor.imagesUploading);
     return _EditableImage(
       child: Padding(
         padding: theme.defaultLineTheme.padding,
-        child: image,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Center(child: image),
+            if (editor.imagesUploading.contains(imageSource))
+              Container(
+                color: Colors.black.withOpacity(0.5),
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+          ],
+        ),
       ),
       node: widget.node,
     );

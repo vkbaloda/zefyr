@@ -122,6 +122,7 @@ class _ZefyrEditorState extends State<ZefyrEditor> {
       // TODO: is there a nicer way to do this?
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _toolbarKey?.currentState?.markNeedsRebuild();
+        setState(() {});
       });
     }
   }

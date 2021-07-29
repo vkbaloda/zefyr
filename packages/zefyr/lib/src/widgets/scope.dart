@@ -178,7 +178,17 @@ class ZefyrScope extends ChangeNotifier {
   void formatSelection(NotusAttribute value) {
     assert(isEditable);
     assert(!_disposed);
+    if (value.value['type'] == 'image') _uploadImage(value.value['source']);
     _controller.formatSelection(value);
+  }
+
+  List<String> imagesUploading = [];
+
+  void _uploadImage(String path) async {
+    imagesUploading.add(path);
+    await _imageDelegate.imageUploadCallback(path);
+    imagesUploading.remove(path);
+    notifyListeners();
   }
 
   void focus() {
