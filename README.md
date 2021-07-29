@@ -5,6 +5,6 @@ This is forked from [memspace/zefyr](https://github.com/memspace/zefyr)
 
 ## Changes
 
-Added feature to upload the selected image
+Added feature to upload the selected image by providing uploadCallback in imageDelegate.
 
 <img src="https://media.giphy.com/media/B8Eyv2fysKGZvREEYJ/giphy.gif" width="200">
