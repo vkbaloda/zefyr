@@ -185,10 +185,12 @@ class ZefyrScope extends ChangeNotifier {
   List<String> imagesUploading = [];
 
   void _uploadImage(String path) async {
-    imagesUploading.add(path);
-    await _imageDelegate.imageUploadCallback(path);
-    imagesUploading.remove(path);
-    notifyListeners();
+    if(imageDelegate.imageUploadCallback != null) {
+      imagesUploading.add(path);
+      await _imageDelegate.imageUploadCallback(path);
+      imagesUploading.remove(path);
+      notifyListeners();
+    }
   }
 
   void focus() {
